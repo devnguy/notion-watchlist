@@ -1,4 +1,4 @@
-import { UpdatePageResponse } from "@notionhq/client/build/src/api-endpoints";
+import { type UpdatePageResponse } from "@notionhq/client/build/src/api-endpoints.js";
 
 export type ApiSearchMovieResponse = {
   results: ApiMovie[];

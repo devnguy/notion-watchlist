@@ -1,5 +1,9 @@
-import { UpdatePageResponse } from "@notionhq/client/build/src/api-endpoints";
-import { Movie, NotionServiceModule, UpdateMoviePayload } from "./types";
+import { type UpdatePageResponse } from "@notionhq/client/build/src/api-endpoints.js";
+import {
+  type Movie,
+  type NotionServiceModule,
+  type UpdateMoviePayload,
+} from "./types.js";
 import { Client } from "@notionhq/client";
 
 export class NotionService implements NotionServiceModule {
@@ -37,11 +41,22 @@ export class NotionService implements NotionServiceModule {
 
     const result = response.results[0];
 
+    if (result === undefined) {
+      return {
+        id: null,
+        title: null,
+      };
+    }
+
     if ("properties" in result) {
-      if ("title" in result.properties.Title) {
+      if (result.properties.Title && "title" in result.properties.Title) {
         return {
           id: result.id,
-          title: result.properties.Title.title[0].plain_text.replace(";", ""),
+          title:
+            Array.isArray(result.properties.Title.title) &&
+            result.properties.Title.title[0]
+              ? result.properties.Title.title[0].plain_text.replace(";", "")
+              : null,
         };
       }
     }

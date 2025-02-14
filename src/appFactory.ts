@@ -1,9 +1,8 @@
-import express, { Express } from "express";
-import Path from "path";
-import { configurationLoader } from "./configuration";
-import { MovieService } from "./services/MovieService";
-import { NotionService } from "./services/NotionService";
-import { middleware } from "./middleware/middleware";
+import express from "express";
+import { configurationLoader } from "./configuration.js";
+import { MovieService } from "./services/MovieService.js";
+import { NotionService } from "./services/NotionService.js";
+import { middleware } from "./middleware/middleware.js";
 import { Client } from "@notionhq/client";
 
 export default async function appFactory() {
@@ -20,10 +19,17 @@ export default async function appFactory() {
   });
 
   // Send error responses as json
-  app.use((err: Error, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send({ error: err.message });
-  });
+  app.use(
+    (
+      err: Error,
+      req: express.Request,
+      res: express.Response,
+      next: express.NextFunction,
+    ) => {
+      console.error(err.stack);
+      res.status(500).send({ error: err.message });
+    },
+  );
 
   app.get("/", middleware);
 
@@ -37,7 +43,7 @@ export default async function appFactory() {
     try {
       const page = await notionService.getPageToUpdate();
 
-      if (page.title === null) {
+      if (page.title === null || page.id === null) {
         res.send({ result: "No page to update" });
         return;
       }

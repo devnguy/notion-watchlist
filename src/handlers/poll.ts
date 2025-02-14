@@ -1,7 +1,7 @@
 import { Client } from "@notionhq/client";
-import { configurationLoader } from "../configuration";
-import { MovieService } from "../services/MovieService";
-import { NotionService } from "../services/NotionService";
+import { MovieService } from "../services/MovieService.js";
+import { NotionService } from "../services/NotionService.js";
+import { configurationLoader } from "../configuration.js";
 
 const configuration = configurationLoader();
 const movieService = new MovieService(configuration.movieService);
@@ -19,7 +19,7 @@ export const populate = async () => {
   try {
     const page = await notionService.getPageToUpdate();
 
-    if (page.title === null) {
+    if (page.title === null || page.id === null) {
       console.log("No page to update");
       return;
     }

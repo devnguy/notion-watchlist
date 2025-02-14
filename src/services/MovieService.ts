@@ -1,36 +1,37 @@
-import axios, { AxiosInstance, AxiosResponse } from "axios";
+import axios, { type AxiosInstance, type AxiosResponse } from "axios";
 import {
-  ApiMovie,
-  ApiSearchMovieResponse,
-  Movie,
-  MovieNotFound,
-  MovieServiceModule,
-  WatchStatus,
-} from "./types";
+  type ApiMovie,
+  type ApiSearchMovieResponse,
+  type Movie,
+  type MovieNotFound,
+  type MovieServiceModule,
+} from "./types.js";
 
 // mapping is from https://api.themoviedb.org/3/genre/movie/list
 const getGenreFromId = (id: number): string => {
-  return {
-    28: "Action",
-    12: "Adventure",
-    16: "Animation",
-    35: "Comedy",
-    80: "Crime",
-    99: "Documentary",
-    18: "Drama",
-    10751: "Family",
-    14: "Fantasy",
-    36: "History",
-    27: "Horror",
-    10402: "Music",
-    9648: "Mystery",
-    10749: "Romance",
-    878: "Science Fiction",
-    10770: "TV Movie",
-    53: "Thriller",
-    10752: "War",
-    37: "Western",
-  }[id];
+  return (
+    {
+      28: "Action",
+      12: "Adventure",
+      16: "Animation",
+      35: "Comedy",
+      80: "Crime",
+      99: "Documentary",
+      18: "Drama",
+      10751: "Family",
+      14: "Fantasy",
+      36: "History",
+      27: "Horror",
+      10402: "Music",
+      9648: "Mystery",
+      10749: "Romance",
+      878: "Science Fiction",
+      10770: "TV Movie",
+      53: "Thriller",
+      10752: "War",
+      37: "Western",
+    }[id] ?? "Action"
+  );
 };
 
 const mapMovie = (movie: ApiMovie): Movie => {
@@ -94,6 +95,14 @@ export class MovieService implements MovieServiceModule {
     );
 
     const movie = sortedByPopularity[0];
+
+    if (!movie) {
+      return {
+        id: null,
+        title: title,
+      };
+    }
+
     return mapMovie(movie);
   }
 }
