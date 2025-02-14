@@ -1,0 +1,14 @@
+{
+  "forceConsistentCasingInFileNames": true,
+  "strict": true,
+  "target": "es2016",
+  "module": "commonjs",
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "rootDir": "./",
+    "outDir": "./dist"
+  },
+  "skipLibCheck": true,
+  "include": ["**/*.ts"],
+  "exclude": ["dist"]
+}
